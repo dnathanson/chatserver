@@ -76,3 +76,4 @@ on any messages that it may have missed (assuming client gets messages via push)
 * There are no checks to ensure that users are online before sending messages
 * There is no yet support for paging of message or contact lists which may be too long to handle in a single request
 * There is no persistent storage for users, contacts or messages.  Once the server shuts down, data is lost.
+* Need more documentation of API calls 
