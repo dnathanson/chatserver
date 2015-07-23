@@ -77,3 +77,31 @@ on any messages that it may have missed (assuming client gets messages via push)
 * There is no yet support for paging of message or contact lists which may be too long to handle in a single request
 * There is no persistent storage for users, contacts or messages.  Once the server shuts down, data is lost.
 * Need more documentation of API calls 
+
+## Running the server
+
+You will need Java 1.7, Maven 3 and Redis installed on your computer.
+
+**Start Redis server locally using default settings / startup command**
+
+Build project using maven
+
+```
+>  mvn clean package
+```
+
+Run server using maven
+
+```
+> mvn mvn spring-boot:run
+```
+
+### Playing with the server
+
+Using something like Postman (https://www.getpostman.com/) to exercise the REST API
+1. Create a some of users (note their IDs in the responses)
+2. Login one (or more) users. Users can log in more than once. (note sessionIds in the response)
+3. Add contacts to connect users
+4. Send message from one user to connected user (you should see push notification logged for alls sessions for both sender and receiver)
+5. Play around with other API calls to get message history or contact lists or lookup users by email address.
+
