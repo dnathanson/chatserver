@@ -10,6 +10,7 @@ import com.ddnconsulting.chatserver.dao.ConnectedSessionDao;
 import com.ddnconsulting.chatserver.model.UserStatus;
 import com.ddnconsulting.chatserver.session.ConnectedSession;
 import com.ddnconsulting.chatserver.session.ConnectedSession.SessionType;
+import com.ddnconsulting.chatserver.session.ConsoleLoggingSession;
 import com.ddnconsulting.chatserver.session.PollingSession;
 import com.ddnconsulting.chatserver.session.SocketIoSession;
 import com.ddnconsulting.chatserver.session.WebSocketsSession;
@@ -77,6 +78,10 @@ public class ConnectedSessionDaoImpl implements ConnectedSessionDao {
 
         ConnectedSession newSession;
         switch (type) {
+            case CONSOLE_LOGGING:
+                newSession = new ConsoleLoggingSession();
+                newSession.setType(SessionType.CONSOLE_LOGGING);
+                break;
             case POLLING:
                 newSession = new PollingSession();
                 newSession.setType(SessionType.POLLING);

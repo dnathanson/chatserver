@@ -43,4 +43,11 @@ public interface ContactDao {
      * @param userId ID of user
      */
     void removeAllConnections(long userId);
+
+    /**
+     * Returns true iff users are connected
+     * @param userId1 ID of a user
+     * @param userId2 ID of another user
+     */
+    boolean isConnected(long userId1, long userId2);
 }

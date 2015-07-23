@@ -50,7 +50,7 @@ public class ContactConsumer {
     {
         try {
             ContactChange contactChange = objectMapper.readValue(message, ContactChange.class);
-            LOG.info("Received message: " + contactChange);
+            LOG.debug("Received message: " + contactChange);
 
             long userId1 = contactChange.getUserId1();
             long userId2 = contactChange.getUserId2();

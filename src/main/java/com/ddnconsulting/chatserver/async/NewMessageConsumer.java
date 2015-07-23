@@ -43,7 +43,7 @@ public class NewMessageConsumer {
     {
         try {
             Message receivedMessage = objectMapper.readValue(message, Message.class);
-            LOG.info("Received message: " + receivedMessage);
+            LOG.debug("Received message: " + receivedMessage);
 
             long senderId = receivedMessage.getSenderId();
             long receiverId = receivedMessage.getReceiverId();
@@ -51,8 +51,7 @@ public class NewMessageConsumer {
             pushMessageToUser(receivedMessage, senderId);
             pushMessageToUser(receivedMessage, receiverId);
 
-            // TODO:
-            // Update last activity time for sender in Redis
+            // TODO: Update last activity time for sender in Redis
         }
         catch (IOException e) {
             throw new RuntimeException("Unable to deserialize string [" + message + "] in Message", e);

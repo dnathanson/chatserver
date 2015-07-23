@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ddnconsulting.chatserver.dao.ConnectedSessionDao;
+import com.ddnconsulting.chatserver.dao.UserDao;
+import com.ddnconsulting.chatserver.model.User;
 import com.ddnconsulting.chatserver.model.UserStatus;
 import com.ddnconsulting.chatserver.session.ConnectedSession;
 import com.ddnconsulting.chatserver.session.ConnectedSession.SessionType;
@@ -30,7 +32,10 @@ public class SessionController {
     private static final Logger LOG = LoggerFactory.getLogger(SessionController.class);
 
     @Autowired
-    ConnectedSessionDao sessionDao;
+    private ConnectedSessionDao sessionDao;
+
+    @Autowired
+    private UserDao userDao;
 
     /**
      * Handles notification from endpoint that user session is still alive.  If session still exists (hasn't been
@@ -64,12 +69,16 @@ public class SessionController {
      * TODO: this should be done with standard HTTP POST of form data (username / password).  This is just a quick
      * REST hack for establishing a session.
      *
-     * @param currentUserId the ID of the user
+     * @param emailAddress email address of the user
      * @return ID of new session
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public Map login(@RequestParam long currentUserId) {
-        ConnectedSession connectedSession = sessionDao.addSession(currentUserId, SessionType.POLLING);
+    public Map login(@RequestParam String emailAddress) {
+        User user = userDao.findUser(emailAddress);
+        if (user == null) {
+            throw new RuntimeException("No user found with email address [" + emailAddress + "]");
+        }
+        ConnectedSession connectedSession = sessionDao.addSession(user.getId(), SessionType.CONSOLE_LOGGING);
         Map<String, String> response = new HashMap<>();
         response.put("status", "OK");
         response.put("sessionId", connectedSession.getId());
@@ -86,7 +95,9 @@ public class SessionController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public Map logoff(@RequestParam String sessionId) {
-        ConnectedSession connectedSession = sessionDao.removeSession(sessionId);
+        if (sessionId != null) {
+            ConnectedSession connectedSession = sessionDao.removeSession(sessionId);
+        }
         Map<String, String> response = new HashMap<>();
         response.put("status", "OK");
         return response;

@@ -62,6 +62,7 @@ public interface ConnectedSession {
 
 
     public static enum SessionType {
+        CONSOLE_LOGGING,
         POLLING,
         SOCKET_IO,
         WEB_SOCKETS

@@ -70,7 +70,9 @@ public class Application extends WebMvcAutoConfigurationAdapter
     }
 
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(sessionCheckInterceptor()).excludePathPatterns("/login", "/logout");
+        registry.addInterceptor(sessionCheckInterceptor()).excludePathPatterns("/login",
+                                                                               "/logout",
+                                                                               "/users");
 
     }
 
@@ -125,18 +127,5 @@ public class Application extends WebMvcAutoConfigurationAdapter
 
     public static void main(String[] args) throws JsonProcessingException {
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
-
-        /*
-        ObjectMapper objectMapper = ctx.getBean(ObjectMapper.class);
-
-        RedisTemplate template = (RedisTemplate) ctx.getBean("messageTemplate");
-
-        LOG.info("Sending message...");
-        Message testMessage = new Message();
-        testMessage.setId(100);
-        testMessage.setContents("foo");
-        testMessage.setTimestamp(System.currentTimeMillis());
-        template.convertAndSend("messages", objectMapper.writeValueAsString(testMessage));
-        */
     }
 }

@@ -42,11 +42,14 @@ public class ContactsController
      * @param contactUserId ID of user to which the current user is go be connected
      * @return the user who was connected
      */
-    @RequestMapping(value = "/contacts/{contactUserId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/contacts/user/{contactUserId}", method = RequestMethod.POST)
     public User addContact(@PathVariable(value = "contactUserId") long contactUserId,
                            @RequestParam String sessionId) {
         ConnectedSession connectedSession = sessionDao.getSession(sessionId);
         User contact = userDao.getUser(contactUserId);
+        if (contact == null) {
+            throw new RuntimeException("No user found with ID [" + contactUserId + "]");
+        }
         contactDao.createConnection(connectedSession.getUserId(), contactUserId);
 
         // Publish creation of new contact so all servers can push contact list changes to clients for both users
@@ -66,7 +69,7 @@ public class ContactsController
      * @param contactUserId ID of user to which the current user is go be connected
      * @return the user who was connected
      */
-    @RequestMapping(value = "/contacts/{contactUserId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/contacts/user/{contactUserId}", method = RequestMethod.DELETE)
     public User removeContact(@PathVariable(value = "contactUserId") long contactUserId,
                            @RequestParam String sessionId) {
         ConnectedSession connectedSession = sessionDao.getSession(sessionId);

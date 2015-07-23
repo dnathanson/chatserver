@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ddnconsulting.chatserver.async.NewMessageProducer;
 import com.ddnconsulting.chatserver.dao.ConnectedSessionDao;
+import com.ddnconsulting.chatserver.dao.ContactDao;
 import com.ddnconsulting.chatserver.dao.MessageDao;
 import com.ddnconsulting.chatserver.model.Message;
 import com.ddnconsulting.chatserver.session.ConnectedSession;
@@ -29,13 +30,16 @@ public class MessagesController
 {
 
     @Autowired
-    MessageDao messageDao;
+    private MessageDao messageDao;
 
     @Autowired
-    ConnectedSessionDao sessionDao;
+    private ConnectedSessionDao sessionDao;
 
     @Autowired
-    NewMessageProducer messageProducer;
+    private NewMessageProducer messageProducer;
+
+    @Autowired
+    private ContactDao contactDao;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -50,7 +54,13 @@ public class MessagesController
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
     public Message addMessage(@RequestBody Message newMessage, @RequestParam String sessionId)
     {
-        // TODO: ensure that receiver is valid for this user (in contacts list)
+        ConnectedSession session = sessionDao.getSession(sessionId);
+        long currentUserId = session.getUserId();
+
+        if (!contactDao.isConnected(currentUserId, newMessage.getReceiverId())) {
+            throw new RuntimeException("Cannot send message to user [" + newMessage.getReceiverId() + "] " +
+                                       "because they are not a contact.");
+        }
 
         // TODO: ensure receiver is online (for now, not supporting sending messages to offline users).
 
@@ -58,7 +68,8 @@ public class MessagesController
         // require additional code to ensure that the message was not persisted twice when there are more than
         // one server running.  Not that difficult to do, but is probably a premature optimization since persisting
         // single messages should be very fast if the DB schema is done correctly.
-        Message message = messageDao.addMessage(newMessage.getSenderId(), newMessage.getReceiverId(),
+        Message message = messageDao.addMessage(currentUserId,
+                                                newMessage.getReceiverId(),
                                                 newMessage.getContents());
 
         // Publish the message to be handled asynchronously by all chat servers

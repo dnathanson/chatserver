@@ -94,4 +94,15 @@ public class ContactDaoImpl implements ContactDao {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented");
     }
+
+    /**
+     * Returns true iff users are connected
+     *
+     * @param userId1 ID of a user
+     * @param userId2 ID of another user
+     */
+    @Override
+    public boolean isConnected(long userId1, long userId2) {
+        return connections.contains(new UserPair(userId1, userId2));
+    }
 }
