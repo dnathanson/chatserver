@@ -9,7 +9,7 @@
   * Clients do not have to be attached to same chat server
 * Asynchrounous handling of new messages and new contacts for performance (using Redis pub/sub)
 * Supports multiple push (or polling) technologies (TODO)
-  * Currently only "push" implemenentation logs messages to console 
+  * Currently only "push" implemenentation logs messages to console
 * Supports presence using Redis (TODO)
 * Maven build
 * Standalone JAR execution with embedded Tomcat
@@ -36,7 +36,7 @@ in available in the response from /login endpoint**
 | POST   | `/contacts/user/<contact user ID>`             | Add a new contact with specified user ID             |
 | DELETE | `/contacts/user/<contact user ID>`             | Removes the contact with specified user ID           |
 | GET    | `/messages?since=time`                         | Returns all message sent or received by current user |
-| GET    | `/users/<contact user ID/messages`             | Returns all message between current user and contact with specified ID | 
+| GET    | `/users/<contact user ID/messages`             | Returns all message between current user and contact with specified ID |
 | POST   | `/messages`                                    | Sends a message.  See below for POST body            |
 
 #### Endpoint: POST `/users`
@@ -61,7 +61,7 @@ Body format
 ```
 receiverId is user ID of one of current user's contacts
 
-#### Endpoint: GET `/messages?since=time` 
+#### Endpoint: GET `/messages?since=time`
 
 Optional querty string argument `since` is standard date/time in milliseconds. If set, only messages sent since
 the specified time will be returned.  This option is useful if a client goes offline for a while and wants to catch up
@@ -76,8 +76,8 @@ on any messages that it may have missed (assuming client gets messages via push)
 * There are no checks to ensure that users are online before sending messages
 * There is no yet support for paging of message or contact lists which may be too long to handle in a single request
 * There is no persistent storage for users, contacts or messages.  Once the server shuts down, data is lost.
-* Need more documentation of API calls 
-* **More unit test coverage**
+* Need more documentation of API calls
+* Only a few unit tests implemented in the com.ddnconsulting.chatserver.dao.impl package.  Clearly more unit test coverage is required.  Let's call it a TODO.
 
 ## Running the server
 
