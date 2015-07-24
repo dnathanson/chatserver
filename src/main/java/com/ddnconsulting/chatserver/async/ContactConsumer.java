@@ -73,9 +73,7 @@ public class ContactConsumer {
      * @param contactId ID of new (or deleted) contact
      */
     private void pushUser(ChangeType changeType, long userId, long contactId) {
-        User user = userDao.getUser(userId);
         User contact = userDao.getUser(contactId);
-
 
         if (changeType == ChangeType.REMOVED) {
             contact.setStatus(UserStatus.DELETE);
@@ -85,6 +83,7 @@ public class ContactConsumer {
             contact.setStatus(UserStatus.ACTIVE);
         }
 
+        // Find all connected sessions for user and push change
         Set<ConnectedSession> senderSessions = sessionDao.getSessionsForUser(userId);
         for (ConnectedSession senderSession : senderSessions) {
             senderSession.pushUser(contact);

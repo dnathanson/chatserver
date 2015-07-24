@@ -1,6 +1,10 @@
 package com.ddnconsulting.chatserver.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -103,5 +107,25 @@ public class UserDaoImpl implements UserDao {
         contactDao.removeAllConnections(userId);
 
         return user;
+    }
+
+    /**
+     * Returns all registered users, sorted by display name.
+     */
+    @Override
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>(this.users.values());
+        Collections.sort(users, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        return users;
+    }
+
+    public void setContactDao(ContactDao contactDao) {
+        this.contactDao = contactDao;
+
     }
 }

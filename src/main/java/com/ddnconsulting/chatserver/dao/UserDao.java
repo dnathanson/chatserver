@@ -1,5 +1,7 @@
 package com.ddnconsulting.chatserver.dao;
 
+import java.util.List;
+
 import com.ddnconsulting.chatserver.model.User;
 
 /**
@@ -42,4 +44,9 @@ public interface UserDao {
      * @return deleted user or null if user not found
      */
     User deleteUser(long userId);
+
+    /**
+     * Returns all registered users
+     */
+    List<User> getUsers();
 }

@@ -1,5 +1,6 @@
 package com.ddnconsulting.chatserver.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -59,13 +60,15 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public synchronized List<Message> getMessagesSince(long userId, final long since) {
-        List<Message> messagesSince = userMessages.get(userId);
-        return Lists.newArrayList(Collections2.filter(messagesSince, new Predicate<Message>() {
+        List<Message> allMessages = userMessages.get(userId);
+        ArrayList<Message> messagesSince = Lists.newArrayList(Collections2.filter(allMessages, new Predicate<Message>() {
             @Override
             public boolean apply(Message message) {
                 return message.getTimestamp() > since;
             }
         }));
+
+        return Lists.reverse(messagesSince);
     }
 
 
