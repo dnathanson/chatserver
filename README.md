@@ -100,6 +100,7 @@ Run server using maven
 ### Playing with the server
 
 Using something like Postman (https://www.getpostman.com/) to exercise the REST API
+
 1. Create a some of users (note their IDs in the responses)
 2. Login one (or more) users. Users can log in more than once. (note sessionIds in the response)
 3. Add contacts to connect users
