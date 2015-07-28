@@ -74,7 +74,7 @@ on any messages that it may have missed (assuming client gets messages via push)
 * User presence in Redis is not implemented yet
 * Implementation of various connection types supporting different push technologies not implemented yet
 * There are no checks to ensure that users are online before sending messages
-* There is no yet support for paging of message or contact lists which may be too long to handle in a single request
+* There is no support for paging of message or contact lists which may be too long to handle in a single request
 * There is no persistent storage for users, contacts or messages.  Once the server shuts down, data is lost.
 * Need more documentation of API calls
 * Only a few unit tests implemented in the com.ddnconsulting.chatserver.dao.impl package.  Clearly more unit test coverage is required.  Let's call it a TODO.
@@ -99,11 +99,11 @@ Run server using maven
 
 ### Playing with the server
 
-Using something like Postman (https://www.getpostman.com/) to exercise the REST API
+Using something like Postman (https://www.getpostman.com/) to exercise the REST API:
 
-1. Create a some of users (note their IDs in the responses)
+1. Create some users (note their IDs in the responses)
 2. Login one (or more) users. Users can log in more than once. (note sessionIds in the response)
 3. Add contacts to connect users
-4. Send message from one user to connected user (you should see push notification logged for alls sessions for both sender and receiver)
+4. Send message from one user to connected user (you should see push notification logged in the console for all sessions for both sender and receiver)
 5. Play around with other API calls to get message history or contact lists or lookup users by email address.
 
